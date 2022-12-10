@@ -7,7 +7,8 @@
     <link rel="stylesheet"  type="text/css" href="css/style.css">
 </head>
 <body>
-    <canvas id="myCanvas" width="1327" height="500" style="border:1px solid #d3d3d3;"></canvas><br>
+
+    <canvas id="myCanvas" width="1327" height="500" style="border:1px solid #0066ff" ;></canvas><br>
     <input type="color" id="color" oninput="def_color(this.value);">
     <input type="range" id="Grosor" oninput="def_Grosor(this.value);" min="1"  max="10" value="1">
     <input type="button" value="Borrar" onclick="limpiar()">
@@ -15,11 +16,11 @@
     <input type="button" value="Rectangulo" onclick="dibujar_paint(2)">
     <input type="button" value="Circulo" onclick="dibujar_paint(3)">
     <input type="button" value="Pincel" onclick="dibujar_paint(4)">
-    </script>
 
-</body>
-</html>
+
+   
 <script>
+
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     var rect=canvas.getBoundingClientRect();
@@ -110,7 +111,13 @@
                         x=0;
                         y=0;
                         dibujando=false;
-                    }else 
+                    }else
+                     if (modo===3){
+                        dibujar_circ(x,y,(e.clientX - rect.left),(e.clientY - rect.top));
+                        x=0;
+                        y=0;
+                        dibujando=false;
+                    }else
                     dibujar(x,y,(e.clientX - rect.left),(e.clientY - rect.top));
                     x=0;
                     y=0;
@@ -146,6 +153,58 @@
                 if(dibujando===true){
                     if(modo===2){
                         dibujar_rect(x,y,(e.clientX - rect.left),(e.clientY - rect.top));
+                        x=0;
+                        y=0;
+                        dibujando=false;
+                    }else
+                     if (modo===3){
+                        dibujar_circ(x,y,(e.clientX - rect.left),(e.clientY - rect.top));
+                        x=0;
+                        y=0;
+                        dibujando=false;
+                    }else
+                    dibujar(x,y,(e.clientX - rect.left),(e.clientY - rect.top));
+                    x=0;
+                    y=0;
+                    dibujando=false;
+                }
+            });
+
+
+        }
+        if(a===3){
+            modo=3; 
+            window.addEventListener("load", () => {
+            canvas.width = canvas.offsetWidth;
+            canvas.height= canvas.offsetHeight;
+        
+            });
+            canvas.addEventListener("mousemove",function(e){
+                if((dibujando===true)&(modo===0)){
+                        dibujar(x,y,(e.clientX - rect.left),(e.clientY - rect.top));
+                        x=e.clientX - rect.left ;
+                        y=e.clientY - rect.top;
+                        
+                    }
+                });
+            canvas.addEventListener("mousedown",function(e){
+                x=e.clientX - rect.left;
+                y=e.clientY - rect.top;
+                dibujando=true;
+            });
+
+            
+
+            canvas.addEventListener("mouseup",function(e){
+                if(dibujando===true){
+                    if(modo===2){
+                        dibujar_rect(x,y,(e.clientX - rect.left),(e.clientY - rect.top));
+                        x=0;
+                        y=0;
+                        dibujando=false;
+                    }else
+                     if (modo===3){
+                        dibujar_circ(x,y,(e.clientX - rect.left),(e.clientY - rect.top));
                         x=0;
                         y=0;
                         dibujando=false;
@@ -190,7 +249,18 @@
             ctx.stroke();
             ctx.closePath();
             }
-    }
+
+            function dibujar_circ(x1,y1,x2,y2){
+            ctx.beginPath();
+            ctx.strokeStyle=color;
+            ctx.lineWidth=grosor;
+            let radio =Math.abs(x1-x2);
+            ctx.arc(x1,y1,radio,0,2*Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+            }
+        }
+    
  
        
     
